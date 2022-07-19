@@ -44,7 +44,7 @@ del result['p_r']
 
 fig = plt.figure()
 plt.scatter(points.lon, points.lat, s=2, c='k')
-for sic_name in ['osisaf', 'nsidc_v4', 'jaxa']:
+for sic_name in ['osisaf', 'nsidc_v4', 'jaxa'][1:2]:
     sic = result.query('dataset == @sic_name')
 
     plt.scatter(sic.lon, sic.lat, c=datasets[sic_name],
@@ -54,6 +54,6 @@ plt.legend()
 plt.grid(ls=':')
 plt.show()
 
-years = result.groupby(by=['year', 'dataset']).count()['x0']
-
-years.plot()
+for asic in datasets.keys(): #asic = "nsidc_v4"
+    years = result.query('dataset == @asic').groupby(by=['year']).count()['x0']
+    years.plot(label=asic, legend=True, grid=True)
